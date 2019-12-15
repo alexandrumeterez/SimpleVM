@@ -18,3 +18,23 @@ GSTORE = 13
 PRINT = 14
 POP = 15
 HALT = 16
+
+OPCODES = [
+    '',
+    'IADD',
+    'ISUB',
+    'IMUL',
+    'ILT',
+    'IEQ',
+    'BR',
+    'BRT',
+    'BRF',
+    'ICONST',
+    'LOAD',
+    'GLOAD',
+    'STORE',
+    'GSTORE',
+    'PRINT',
+    'POP',
+    'HALT'
+]
