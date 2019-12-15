@@ -22,20 +22,20 @@ HALT = 16
 
 INSTRUCTIONS = [
     '',
-    Instruction('IADD', 0),
-    Instruction('ISUB', 0),
-    Instruction('IMUL', 0),
-    Instruction('ILT', 0),
-    Instruction('IEQ', 0),
-    Instruction('BR', 1),
-    Instruction('BRT', 1),
-    Instruction('BRF', 1),
-    Instruction('ICONST', 1),
+    Instruction('IADD', 0),  #
+    Instruction('ISUB', 0),  #
+    Instruction('IMUL', 0),  #
+    Instruction('ILT', 0),  #
+    Instruction('IEQ', 0),  #
+    Instruction('BR', 1), #
+    Instruction('BRT', 1), #
+    Instruction('BRF', 1), #
+    Instruction('ICONST', 1),  #
     Instruction('LOAD', 1),
-    Instruction('GLOAD', 1),
+    Instruction('GLOAD', 1),  #
     Instruction('STORE', 1),
-    Instruction('GSTORE', 1),
-    Instruction('PRINT', 0),
+    Instruction('GSTORE', 1),  #
+    Instruction('PRINT', 0),  #
     Instruction('POP', 1),
-    Instruction('HALT', 0)
+    Instruction('HALT', 0)  #
 ]

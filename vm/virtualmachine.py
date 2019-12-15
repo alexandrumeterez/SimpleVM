@@ -98,6 +98,63 @@ class VM:
                 address = self.code[self.ip]
                 self.ip += 1
                 self.global_data[address] = top_of_stack_element
+            elif opcode == IADD:
+                operand1 = self.stack[self.sp]
+                self.sp -= 1
+                operand2 = self.stack[self.sp]
+                self.sp -= 1
+                result = operand1 + operand2
+                self.sp += 1
+                self.stack[self.sp] = result
+            elif opcode == ISUB:
+                operand1 = self.stack[self.sp]
+                self.sp -= 1
+                operand2 = self.stack[self.sp]
+                self.sp -= 1
+                result = operand1 - operand2
+                self.sp += 1
+                self.stack[self.sp] = result
+            elif opcode == IMUL:
+                operand1 = self.stack[self.sp]
+                self.sp -= 1
+                operand2 = self.stack[self.sp]
+                self.sp -= 1
+                result = operand1 * operand2
+                self.sp += 1
+                self.stack[self.sp] = result
+            elif opcode == ILT:
+                operand1 = self.stack[self.sp]
+                self.sp -= 1
+                operand2 = self.stack[self.sp]
+                self.sp -= 1
+                result = (operand1 < operand2)
+                self.sp += 1
+                self.stack[self.sp] = int(result)
+            elif opcode == IEQ:
+                operand1 = self.stack[self.sp]
+                self.sp -= 1
+                operand2 = self.stack[self.sp]
+                self.sp -= 1
+                result = (operand1 == operand2)
+                self.sp += 1
+                self.stack[self.sp] = int(result)
+            elif opcode == BR:
+                branch_to_addr = self.code[self.ip]
+                self.ip = branch_to_addr
+            elif opcode == BRT:
+                branch_to_addr = self.code[self.ip]
+                self.ip += 1
+                top_of_stack_element = self.stack[self.sp]
+                self.sp -= 1
+                if top_of_stack_element:
+                    self.ip = branch_to_addr
+            elif opcode == BRF:
+                branch_to_addr = self.code[self.ip]
+                self.ip += 1
+                top_of_stack_element = self.stack[self.sp]
+                self.sp -= 1
+                if not top_of_stack_element:
+                    self.ip = branch_to_addr
             else:
                 raise UnknownInstruction(opcode)
             if self.trace:
