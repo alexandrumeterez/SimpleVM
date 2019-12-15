@@ -3,8 +3,8 @@ from vm.utils import eprint
 
 
 class UnknownInstruction(Exception):
-    def __init__(self, err):
-        Exception.__init__(self, "Unknown instruction: {}".format(err))
+    def __init__(self, err, ip):
+        Exception.__init__(self, "Unknown opcode {} at {}".format(err, ip))
 
 
 class VM:
@@ -155,7 +155,25 @@ class VM:
                 self.sp -= 1
                 if not top_of_stack_element:
                     self.ip = branch_to_addr
+            elif opcode == LOAD:
+                # Load <offset from fp>
+                # Loads from offset of fp to stack
+                offset = self.code[self.ip]
+                self.ip += 1
+
+                # Push on stack
+                self.sp += 1
+                self.stack[self.sp] = self.stack[self.fp + offset]
+            elif opcode == STORE:
+                # Stores from stack to offset of fp
+                offset = self.code[self.ip]
+                self.ip += 1
+
+                self.sp -= 1
+                self.stack[self.fp + offset] = self.stack[self.sp]
+            elif opcode == POP:
+                self.sp -= 1
             else:
-                raise UnknownInstruction(opcode)
+                raise UnknownInstruction(opcode, self.ip)
             if self.trace:
                 self.show_stack()
