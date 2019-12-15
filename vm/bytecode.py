@@ -1,6 +1,7 @@
 """
     Declare the bytecodes for the VM
 """
+from vm.instruction import Instruction
 
 IADD = 1
 ISUB = 2
@@ -19,22 +20,22 @@ PRINT = 14
 POP = 15
 HALT = 16
 
-OPCODES = [
+INSTRUCTIONS = [
     '',
-    'IADD',
-    'ISUB',
-    'IMUL',
-    'ILT',
-    'IEQ',
-    'BR',
-    'BRT',
-    'BRF',
-    'ICONST',
-    'LOAD',
-    'GLOAD',
-    'STORE',
-    'GSTORE',
-    'PRINT',
-    'POP',
-    'HALT'
+    Instruction('IADD', 0),
+    Instruction('ISUB', 0),
+    Instruction('IMUL', 0),
+    Instruction('ILT', 0),
+    Instruction('IEQ', 0),
+    Instruction('BR', 1),
+    Instruction('BRT', 1),
+    Instruction('BRF', 1),
+    Instruction('ICONST', 1),
+    Instruction('LOAD', 1),
+    Instruction('GLOAD', 1),
+    Instruction('STORE', 1),
+    Instruction('GSTORE', 1),
+    Instruction('PRINT', 0),
+    Instruction('POP', 1),
+    Instruction('HALT', 0)
 ]
