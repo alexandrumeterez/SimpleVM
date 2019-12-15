@@ -25,7 +25,7 @@ class VM:
 
         self.ip = entrypoint
         self.sp = -1
-        self.fp = None
+        self.fp = -1
 
     def dissassemble(self, opcode):
         if INSTRUCTIONS[opcode].n_operands == 0:
@@ -111,7 +111,7 @@ class VM:
                 self.sp -= 1
                 operand2 = self.stack[self.sp]
                 self.sp -= 1
-                result = operand1 - operand2
+                result = operand2 - operand1
                 self.sp += 1
                 self.stack[self.sp] = result
             elif opcode == IMUL:
@@ -127,7 +127,7 @@ class VM:
                 self.sp -= 1
                 operand2 = self.stack[self.sp]
                 self.sp -= 1
-                result = (operand1 < operand2)
+                result = (operand1 > operand2)
                 self.sp += 1
                 self.stack[self.sp] = int(result)
             elif opcode == IEQ:
@@ -146,14 +146,14 @@ class VM:
                 self.ip += 1
                 top_of_stack_element = self.stack[self.sp]
                 self.sp -= 1
-                if top_of_stack_element:
+                if top_of_stack_element >= 1:
                     self.ip = branch_to_addr
             elif opcode == BRF:
                 branch_to_addr = self.code[self.ip]
                 self.ip += 1
                 top_of_stack_element = self.stack[self.sp]
                 self.sp -= 1
-                if not top_of_stack_element:
+                if top_of_stack_element <= 0:
                     self.ip = branch_to_addr
             elif opcode == LOAD:
                 # Load <offset from fp>
@@ -173,6 +173,55 @@ class VM:
                 self.stack[self.fp + offset] = self.stack[self.sp]
             elif opcode == POP:
                 self.sp -= 1
+            elif opcode == CALL:
+                # all arguments must be on stack
+                # get address of function
+                func_addr = self.code[self.ip]
+                self.ip += 1
+                # get n_args
+                n_args = self.code[self.ip]
+                self.ip += 1
+
+                # push n_args, current fp and current ip(return addr)
+                self.sp += 1
+                self.stack[self.sp] = n_args
+                self.sp += 1
+                self.stack[self.sp] = self.fp
+                self.sp += 1
+                self.stack[self.sp] = self.ip
+
+                # put fp at current sp(start new stack frame)
+                self.fp = self.sp
+
+                # set ip at function address
+                self.ip = func_addr
+            elif opcode == RET:
+                # every function has a return value on stack
+                # get return value
+                retval = self.stack[self.sp]
+                self.sp -= 1
+
+                # set current sp to former sp(where fp points to)
+                self.sp = self.fp
+
+                # jump to return address
+                self.ip = self.stack[self.sp]
+                self.sp -= 1
+
+                # restore fp
+                self.fp = self.stack[self.sp]
+                self.sp -= 1
+
+                # get n_args
+                n_args = self.stack[self.sp]
+                self.sp -= 1
+                # jump over all args
+                self.sp -= n_args
+
+                # put return value on stack
+                self.sp += 1
+                self.stack[self.sp] = retval
+
             else:
                 raise UnknownInstruction(opcode, self.ip)
             if self.trace:

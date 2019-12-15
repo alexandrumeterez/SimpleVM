@@ -19,6 +19,8 @@ GSTORE = 13
 PRINT = 14
 POP = 15
 HALT = 16
+CALL = 17
+RET = 18
 
 INSTRUCTIONS = [
     '',
@@ -37,5 +39,7 @@ INSTRUCTIONS = [
     Instruction('GSTORE', 1),  #
     Instruction('PRINT', 0),  #
     Instruction('POP', 0),  #
-    Instruction('HALT', 0)  #
+    Instruction('HALT', 0),  #
+    Instruction('CALL', 2), #
+    Instruction('RET', 0) #
 ]
